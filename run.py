@@ -43,15 +43,15 @@ def _extract_feature_vectors(path_A, path_B, path_pairs_file,
                                             attrs_after='label')
 
   # Impute feature vectors with the mean of the column values.
-  feature_vectors = em.impute_table(feature_vectors,
-                                    exclude_attrs=['_id', 'table1.id',
-                                                   'table2.id', 'label'],
-                                    strategy='mean')
+  # feature_vectors = em.impute_table(feature_vectors,
+  #                                   exclude_attrs=['_id', 'table1.id',
+  #                                                  'table2.id', 'label'],
+  #                                   strategy='mean')
   t = time.time() - start_time
   return feature_vectors, t, train_feature_subset
 
 
-def mg_predict(train, test,  t_train, t_test, scenario):
+def mg_predict(train, test,  t_train, t_test, dataset_name):
   '''
   Predict results using four different classifiers of Magellan
   and average the results
@@ -154,4 +154,4 @@ if __name__ == '__main__':
   test, t_test, _ = _extract_feature_vectors(path_A, path_B, path_test,
                                          train_feature_subset)
 
-  mg_predict(train, test, t_train, t_test, 'magellan-individual')
+  mg_predict(train, test, t_train, t_test, dataset_name)
