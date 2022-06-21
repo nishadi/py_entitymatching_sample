@@ -4,6 +4,7 @@ import os
 import resource
 import sys
 import time
+import numpy as np
 
 import fcntl
 import py_entitymatching as em
@@ -43,10 +44,10 @@ def _extract_feature_vectors(path_A, path_B, path_pairs_file,
                                             attrs_after='label')
 
   # Impute feature vectors with the mean of the column values.
-  # feature_vectors = em.impute_table(feature_vectors,
-  #                                   exclude_attrs=['_id', 'table1.id',
-  #                                                  'table2.id', 'label'],
-  #                                   strategy='mean')
+  feature_vectors = em.impute_table(feature_vectors,
+                                    exclude_attrs=['_id', 'table1.id',
+                                                   'table2.id', 'label'],
+                                    strategy='mean', missing_val=np.NaN)
   t = time.time() - start_time
   return feature_vectors, t, train_feature_subset
 
@@ -97,7 +98,7 @@ def mg_predict(train, test,  t_train, t_test, dataset_name):
       f_star = 0
     else:
       f_star = p * r / (p + r - p * r)
-    logging.info('---{} p{} r{} fst{} t{}'.format(clf_name, p, r, f_star, t2))
+    logging.info('---{} p{} r{} fst{}'.format(clf_name, p, r, f_star))
 
     p = round(p * 100, 2)
     r = round(r * 100, 2)
